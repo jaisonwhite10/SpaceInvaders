@@ -1,7 +1,8 @@
 from turtle import Turtle,Screen
+from aliens import Aliens
 import time
 
-
+aliens = Aliens()
 class Spaceship(Turtle):
 
     def __init__(self, position):
@@ -12,6 +13,8 @@ class Spaceship(Turtle):
         self.penup()
         self.speed("fastest")
         self.goto(position)
+        self.laser = None
+
 
     def move_right(self):
         new_x = self.xcor() + 20
@@ -21,20 +24,53 @@ class Spaceship(Turtle):
         new_x = self.xcor() - 20
         self.goto(new_x, self.ycor())
 
-    def shoot_lazer(self):
-        lazer = Turtle()
+    def shoot_laser(self):
+        laser = Turtle()
+        self.laser = laser
         screen = Screen()
-        lazer.shape()
-        lazer.setheading(90)
-        lazer.color("white")
-        lazer.penup()
-        lazer.speed("fastest")
-        lazer.goto(self.xcor(), self.ycor())
+        laser.shapesize(0.5,1)
+        laser.setheading(90)
+        laser.color("white")
+        laser.penup()
+        laser.speed("fastest")
+        laser.goto(self.xcor(), self.ycor())
 
+        
+
+        #defining move_laser() leads to better shooting gameplay than when I call self.move_laser() in the shoot_laser function, also keeping laser as laser not self.laser
         def move_laser():
-            lazer_new_y = lazer.ycor() + 10
-            lazer.goto(lazer.xcor(), lazer_new_y)
-            screen.ontimer(move_laser, 50)
+            laser_new_y = laser.ycor() + 10
+            laser.goto(laser.xcor(), laser_new_y)
+            # self.detect_laser_collision(laser)
+            # if laser.distance() < 30:
+            #     print('hit')
+            # if self.detect_laser_collision(laser,alien_list):
+            #     print('alien hit')
+            # self.detect_laser_collision(laser)
 
+            screen.ontimer(move_laser, 50)
         move_laser()
+
+
+    def laser(self):
+        if self.laser:
+            print('true')
+        else:
+            print('no laser')
+
+    def detect_laser_collision(self,laser,alien):
+        if laser.distance(alien) < 30:
+            print('hit')
+
+
+
+
+
+
+
+
+
+
+
+
 
